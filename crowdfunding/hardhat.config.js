@@ -1,6 +1,6 @@
 require("@matterlabs/hardhat-zksync-solc");
 require("@matterlabs/hardhat-zksync-verify");
-
+require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -8,9 +8,7 @@ module.exports = {
     version: "1.4.1",
     compilerSource: "binary",
     settings: {
-      optimizer: {
-        enabled: true,
-      },
+      optimizer: { enabled: true },
     },
   },
   networks: {
@@ -19,16 +17,20 @@ module.exports = {
       ethNetwork: "sepolia",
       zksync: true,
       chainId: 300,
-      verifyURL:
-        "https://explorer.sepolia.era.zksync.dev/contract_verification",
+      verifyURL: true,
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+    },
+    sepolia: {
+      url: `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 11155111,
     },
     zkSyncMainnet: {
       url: "https://mainnet.era.zksync.io",
       ethNetwork: "mainnet",
       zksync: true,
       chainId: 324,
-      verifyURL:
-        "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
+      verifyURL: "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
     },
   },
   paths: {
@@ -40,10 +42,7 @@ module.exports = {
   solidity: {
     version: "0.8.23",
     settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
-      },
+      optimizer: { enabled: true, runs: 200 },
     },
   },
 };
